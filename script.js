@@ -109,7 +109,7 @@ tabsContainer.addEventListener('click', function(e) {
 
 });
 
-// Menu fade animation
+// Menu fade animation #195
 // const nav = document.querySelector(); --> declaration moved up to the beginning of the file
 
 const handleHover = function (e, opacity) {
@@ -132,16 +132,38 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
 
-// Sticky Navigation (Bad Way)
-const initialCoords = section1.getBoundingClientRect();
+// Sticky Navigation (Bad Way) #196
+// const initialCoords = section1.getBoundingClientRect();
 
-window.addEventListener('scroll', function(e) {
-    if (window.scrollY > initialCoords.top) {
+// window.addEventListener('scroll', function(e) {
+//     if (window.scrollY > initialCoords.top) {
+//         nav.classList.add('sticky');
+//     } else {
+//         nav.classList.remove('sticky');
+//     }
+// })
+
+// Sticky Navigation (Intersectioin Observer API) #197
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height; // calculating dynamically the height of the menu
+
+const stickyNav = function(entries) {
+    const [entry] = entries;
+
+    if (!entry.isIntersecting) {
         nav.classList.add('sticky');
     } else {
         nav.classList.remove('sticky');
     }
-})
+}
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+    root: null,
+    threshold: 0, // when 0% of the header is visible, smth should happen
+    rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
 
 // const header = document.querySelector('header');
 // message.innerHTML = 'We use cookies to improve perfomance <button class="btn btn--close-cookie">Got it!</button>';
