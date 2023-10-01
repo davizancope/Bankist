@@ -132,6 +132,17 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
 
+// Sticky Navigation (Bad Way)
+const initialCoords = section1.getBoundingClientRect();
+
+window.addEventListener('scroll', function(e) {
+    if (window.scrollY > initialCoords.top) {
+        nav.classList.add('sticky');
+    } else {
+        nav.classList.remove('sticky');
+    }
+})
+
 // const header = document.querySelector('header');
 // message.innerHTML = 'We use cookies to improve perfomance <button class="btn btn--close-cookie">Got it!</button>';
 
