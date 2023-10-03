@@ -185,7 +185,34 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 allSections.forEach(function(section) {
     sectionObserver.observe(section);
     section.classList.add('section--hidden');
-})
+});
+
+// Lazy loading images
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+const loadImg = function(entries, observer) {
+    const [entry] = entries;
+
+    if (!entry.isIntersecting)
+        return;
+
+    // Replace the src with the data-src
+    entry.target.src = entry.target.dataset.src;
+
+    entry.target.addEventListener('laod', function() {
+        entry.target.classList.remove('lazy-img');
+    });
+
+    observer.unobserve(entry.target);
+}
+
+const imgObserver = new IntersectionObserver(loadImg, {
+    root: null, //entire viewport,
+    threshold: 0,
+    rootMargin: '200px',
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
 
 // const header = document.querySelector('header');
 // message.innerHTML = 'We use cookies to improve perfomance <button class="btn btn--close-cookie">Got it!</button>';
